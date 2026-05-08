@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import cv2
 from cv2.typing import MatLike
 
-PNG_IMAGES_DIR: Final[str] = "src/images"
+PNG_IMAGES_DIR: Final[str] = "images"
 ALLOWED_EXTENSIONS: Final[set[str]] = {".png", ".jpg"}
 
 def load_image_from_path(image_path: str) -> MatLike:
