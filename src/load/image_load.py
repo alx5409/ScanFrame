@@ -1,5 +1,6 @@
-from typing import Final
+import logging
 import os
+from typing import Final
 
 import cv2
 from cv2.typing import MatLike
@@ -9,11 +10,13 @@ ALLOWED_EXTENSIONS: Final[set[str]] = {".png", ".jpg"}
 def check_path(path: str) -> None:
     """Checks if the given path exists."""
     if not os.path.exists(path):
+        logging.error(f"Path does not exist: {path}")
         raise FileNotFoundError(f"Path does not exist: {path}")
     
 def check_directory(directory: str) -> None:
     """Checks if the given path is a directory."""
     if not os.path.isdir(directory):
+        logging.error(f"Path is not a directory: {directory}")
         raise NotADirectoryError(f"Path is not a directory: {directory}")
     
 def get_paths_from_dir(directory: str) -> list[str]:
@@ -31,7 +34,9 @@ def load_image_from_path(image_path: str) -> MatLike:
     check_path(image_path)
     image = cv2.imread(image_path)
     if image is None:
+        logging.error(f"Could not load image from path: {image_path}")
         raise ValueError(f"Could not load image from path: {image_path}")
+    logging.info(f"Loaded image from path: {image_path}")
     return image
 
 def load_images_from_dir(directory: str) -> list[MatLike]:
@@ -42,4 +47,5 @@ def load_images_from_dir(directory: str) -> list[MatLike]:
     images: list[MatLike] = []
     for image_path in paths:
         images.append(load_image_from_path(image_path))
+    logging.info(f"Loaded {len(images)} images from directory: {directory}")
     return images
